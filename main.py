@@ -19,6 +19,9 @@ while running:
             running = False
 
     screen.fill("black")
+    board.tiles[5].color = "red"
+    board.tiles[6].color = "blue"
+    board.tiles[7].color = "blue"
     board.draw(screen)
 
     pygame.display.flip()

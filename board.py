@@ -32,7 +32,8 @@ class Board:
             for j in range(self.dimension):
                 self.tiles.append(Tile(self.x + x_add + self.tile_size * j * 2,
                                        self.y + y_add + self.tile_size * i * 1.75,
-                                       self.tile_size))
+                                       self.tile_size,
+                                       i * self.dimension + j))
             x_add += self.tile_size
 
     def draw(self, surface):
@@ -40,4 +41,5 @@ class Board:
         * Draws all tiles to the surface
         '''
         for tile in self.tiles:
+            print(tile.label)
             tile.draw(surface)
