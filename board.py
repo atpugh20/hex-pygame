@@ -3,6 +3,10 @@ import math as m
 
 
 class Board:
+    '''
+    * The board contains all the tiles and methods used for gameplay
+    '''
+
     def __init__(self, x, y, dimension, sW, sH):
         self.x = x
         self.y = y
@@ -33,7 +37,8 @@ class Board:
                 self.tiles.append(Tile(self.x + x_add + self.tile_size * j * 2,
                                        self.y + y_add + self.tile_size * i * 1.75,
                                        self.tile_size,
-                                       i * self.dimension + j))
+                                       i * self.dimension + j,
+                                       self.dimension))
             x_add += self.tile_size
 
     def draw(self, surface):
@@ -41,5 +46,21 @@ class Board:
         * Draws all tiles to the surface
         '''
         for tile in self.tiles:
-            print(tile.label)
             tile.draw(surface)
+
+    def clear(self):
+        '''
+        * Wipes the board of all pieces and sets them all as unvisited.
+        '''
+        for tile in self.tiles:
+            tile.visited = False
+            tile.color = "darkgrey"
+
+    def filled(self):
+        '''
+        * Returns True if the board is full of pieces. Returns False if not.
+        '''
+        for tile in self.tiles:
+            if not tile.filled():
+                return False
+        return True
