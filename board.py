@@ -64,3 +64,46 @@ class Board:
             if not tile.filled():
                 return False
         return True
+
+    def check_winner(self, color, tiles):
+        pass
+
+    def find_path(self, color, label, tiles):
+        '''
+        * If there is a full path from one wall to the other, return True. If
+        * not, return False. Uses recursion to check adjacent tiles.
+        '''
+        tile = tiles[label]
+
+        # If the tile has the right color and is unvisited
+        if tile.color == color and not tile.visited:
+            tile.visited = True
+
+            # Check if opposite wall has been reached
+            if tile.color == "red" and tile.y == self.dimension - 1:
+                return True
+            if tile.color == "blue" and tile.x == self.dimension - 1:
+                return True
+
+            # Check adjacent nodes
+            if tile.t_right != -1:
+                if self.find_path(color, tile.t_right, tiles):
+                    return True
+            if tile.m_right != -1:
+                if self.find_path(color, tile.m_right, tiles):
+                    return True
+            if tile.b_right != -1:
+                if self.find_path(color, tile.b_right, tiles):
+                    return True
+            if tile.b_left != -1:
+                if self.find_path(color, tile.b_left, tiles):
+                    return True
+            if tile.m_left != -1:
+                if self.find_path(color, tile.m_left, tiles):
+                    return True
+            if tile.t_left != -1:
+                if self.find_path(color, tile.t_left, tiles):
+                    return True
+
+        # If a path is not found
+        return False
