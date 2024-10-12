@@ -8,7 +8,7 @@ class Tile:
     * color. The color indicates which player put the piece on the tile.
     '''
 
-    def __init__(self, x, y, size, label, dimension):
+    def __init__(self, x, y, size, label, dimension, empty_color):
         # Game Logic Attributes
         self.label = label
         self.visited = False
@@ -26,7 +26,7 @@ class Tile:
         # Visual Attributes
         self.x = x
         self.y = y
-        self.color = "darkgrey"
+        self.color = empty_color
         self.size = size
         self.alt_size = m.sqrt(self.size**2 - (self.size * 0.5)**2)
         self.half_size = self.size * 0.5
