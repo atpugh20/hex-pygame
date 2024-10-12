@@ -1,6 +1,7 @@
 from tile import Tile
 import random
 import math as m
+import numpy as np
 
 
 class Board:
@@ -68,7 +69,7 @@ class Board:
                 return False
         return True
 
-    def check_winner(self, color, tiles):
+    def check_winner(self, color, tile_colors):
         '''
         * Uses the color's starting wall to find a path to the opposite wall.
         '''
@@ -76,51 +77,48 @@ class Board:
         if color == "blue":
             interval = self.dimension
 
-        # Clear visited
-        for tile in tiles:
-            tile.visited = False
+        # Visit and color initialize
+        visited = [False] * len(self.tiles)
 
         # Begin checking from the color's start wall
         for i in range(0, interval * self.dimension, interval):
-            if self.find_path(color, i, tiles):
+            if self.find_path(color, i, tile_colors, visited):
                 return True
         return False
 
-    def find_path(self, color, label, tiles):
+    def find_path(self, color, label, tile_colors, visited):
         '''
         * If there is a full path from one wall to the other, return True. If
         * not, return False. Uses recursion to check adjacent tiles.
         '''
-        tile = tiles[label]
-
         # If the tile has the right color and is unvisited
-        if tile.color == color and not tile.visited:
-            tile.visited = True
+        if tile_colors[label] == color and not visited[label]:
+            visited[label] = True
 
             # Check if opposite wall has been reached
-            if tile.color == "red" and tile.label // self.dimension == self.dimension - 1:
+            if tile_colors[label] == "red" and label // self.dimension == self.dimension - 1:
                 return True
-            if tile.color == "blue" and tile.label % self.dimension == self.dimension - 1:
+            if tile_colors[label] == "blue" and label % self.dimension == self.dimension - 1:
                 return True
 
             # Check adjacent nodes
-            if tile.t_right != -1:
-                if self.find_path(color, tile.t_right, tiles):
+            if self.tiles[label].t_right != -1:
+                if self.find_path(color, self.tiles[label].t_right, tile_colors, visited):
                     return True
-            if tile.m_right != -1:
-                if self.find_path(color, tile.m_right, tiles):
+            if self.tiles[label].m_right != -1:
+                if self.find_path(color, self.tiles[label].m_right, tile_colors, visited):
                     return True
-            if tile.b_right != -1:
-                if self.find_path(color, tile.b_right, tiles):
+            if self.tiles[label].b_right != -1:
+                if self.find_path(color, self.tiles[label].b_right, tile_colors, visited):
                     return True
-            if tile.b_left != -1:
-                if self.find_path(color, tile.b_left, tiles):
+            if self.tiles[label].b_left != -1:
+                if self.find_path(color, self.tiles[label].b_left, tile_colors, visited):
                     return True
-            if tile.m_left != -1:
-                if self.find_path(color, tile.m_left, tiles):
+            if self.tiles[label].m_left != -1:
+                if self.find_path(color, self.tiles[label].m_left, tile_colors, visited):
                     return True
-            if tile.t_left != -1:
-                if self.find_path(color, tile.t_left, tiles):
+            if self.tiles[label].t_left != -1:
+                if self.find_path(color, self.tiles[label].t_left, tile_colors, visited):
                     return True
 
         # If a path is not found
@@ -136,34 +134,33 @@ class Board:
         rates = [0] * len(self.tiles)
         empty_tiles = -1
         first_color = current_color
+        colors = [tile.color for tile in self.tiles]
+        colors = np.array(colors)
 
         # Get number of empty tiles
         for t in self.tiles:
             if t.color == self.empty_color:
                 empty_tiles += 1
-
         # Runs simulations with every possible move that can be made
         for i in range(len(self.tiles)):
             # If the current tile is not empty, move to next
             if self.tiles[i].color != self.empty_color:
                 continue
-
-            sim_tiles_t = self.tiles[:]
-            print(id(sim_tiles_t), id(self.tiles))
-            sim_tiles_t[i].color = current_color
+            sim_colors_t = colors.copy() 
+            sim_colors_t[i] = current_color
             wins = 0
 
             # Simulate 'sim_num' matches with the move
             for j in range(sim_num):
-                sim_tiles = sim_tiles_t[:]
-
+                sim_colors = sim_colors_t.copy()
+                                
                 # Randomly fill in every space, alternating colors
                 for k in range(empty_tiles):
                     # Randomly fill empty space
                     while True:
                         r_index = random.randint(0, len(self.tiles) - 1)
-                        if sim_tiles[r_index].color == self.empty_color:
-                            sim_tiles[r_index].color = current_color
+                        if sim_colors[r_index] == self.empty_color:
+                            sim_colors[r_index] = current_color
                             break
 
                     # Alternate colors
@@ -172,7 +169,7 @@ class Board:
                     other_color = temp
 
                 # Increment over wins when the player wins with the move
-                if self.check_winner(first_color, sim_tiles):
+                if self.check_winner(first_color, sim_colors):
                     wins += 1
             rates[i] = wins
 

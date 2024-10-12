@@ -16,7 +16,7 @@ def hex(surface, clock, sW, sH):
     user_color = "red"
     cpu_color = "blue"
 
-    sim_moves = 1
+    sim_moves = 100
 
     # Game Loop
     while running:
