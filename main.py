@@ -1,6 +1,8 @@
+import cython
 import pygame as pg
 from hex import hex
 
+@cython.boundscheck(True)
 
 def main():
     pg.init()

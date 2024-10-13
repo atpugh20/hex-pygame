@@ -134,8 +134,7 @@ class Board:
         rates = [0] * len(self.tiles)
         empty_tiles = -1
         first_color = current_color
-        colors = [tile.color for tile in self.tiles]
-        colors = np.array(colors)
+        colors = np.array([tile.color for tile in self.tiles])
 
         # Get number of empty tiles
         for t in self.tiles:
@@ -144,16 +143,14 @@ class Board:
         # Runs simulations with every possible move that can be made
         for i in range(len(self.tiles)):
             # If the current tile is not empty, move to next
-            if self.tiles[i].color != self.empty_color:
+            if colors[i] != self.empty_color:
                 continue
-            sim_colors_t = colors.copy() 
-            sim_colors_t[i] = current_color
             wins = 0
 
             # Simulate 'sim_num' matches with the move
             for j in range(sim_num):
-                sim_colors = sim_colors_t.copy()
-                                
+                sim_colors = colors.copy() 
+                sim_colors[i] = current_color               
                 # Randomly fill in every space, alternating colors
                 for k in range(empty_tiles):
                     # Randomly fill empty space

@@ -9,14 +9,14 @@ def hex(surface, clock, sW, sH):
     '''
     running = True
     FPS = 60
-    BOARD_DIMENSION = 11
+    BOARD_DIMENSION = 7
     board = Board(0, 0, BOARD_DIMENSION, sW, sH)
     user_turn = True
     cpu_turn = False
     user_color = "red"
     cpu_color = "blue"
 
-    sim_moves = 100
+    sim_moves = 1000
 
     # Game Loop
     while running:
@@ -40,7 +40,10 @@ def hex(surface, clock, sW, sH):
                     user_turn = False
                     cpu_turn = True
                     tile.color = user_color
-        if board.check_winner(user_color, board.tiles):
+        colors = [t.color for t in board.tiles]
+        board.draw(surface)        
+        pg.display.flip()        
+        if board.check_winner(user_color, colors):
             board.clear()
             temp = user_color
             user_color = cpu_color
@@ -52,7 +55,11 @@ def hex(surface, clock, sW, sH):
             board.tiles[choice].color = cpu_color
             user_turn = True
             cpu_turn = False
-        if board.check_winner(cpu_color, board.tiles):
+        colors = [t.color for t in board.tiles]
+        board.draw(surface)        
+        pg.display.flip()
+         
+        if board.check_winner(cpu_color, colors):
             board.clear()
             temp = user_color
             user_color = cpu_color
