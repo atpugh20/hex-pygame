@@ -24,6 +24,7 @@ class Board:
 
         self.tiles = []
         self.empty_color = "darkgrey"
+        self.moves_ahead = 80
         self.fill_tiles()
 
     def fill_tiles(self):
@@ -152,6 +153,7 @@ class Board:
                 sim_colors = colors.copy() 
                 sim_colors[i] = current_color               
                 # Randomly fill in every space, alternating colors
+                empty_tiles = empty_tiles if empty_tiles < self.moves_ahead else self.moves_ahead
                 for k in range(empty_tiles):
                     # Randomly fill empty space
                     while True:
@@ -171,6 +173,7 @@ class Board:
             rates[i] = wins
 
         # Return the move with the most simulated wins
+        print(rates)
         biggest = 0
         biggest_index = 0
         for i in range(len(rates)):

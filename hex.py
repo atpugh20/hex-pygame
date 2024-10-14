@@ -9,7 +9,7 @@ def hex(surface, clock, sW, sH):
     '''
     running = True
     FPS = 60
-    BOARD_DIMENSION = 7
+    BOARD_DIMENSION = 11
     board = Board(0, 0, BOARD_DIMENSION, sW, sH)
     user_turn = True
     cpu_turn = False
