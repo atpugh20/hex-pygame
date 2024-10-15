@@ -93,7 +93,7 @@ class Tile:
         y_diff = (mouse_y - self.y) ** 2
         distance = m.sqrt(x_diff + y_diff)
         if distance < self.size:
-            self.color = "black"
+            self.color = "white"
             return True
         else:
             self.color = "darkgrey"

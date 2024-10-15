@@ -1,19 +1,20 @@
 import pygame as pg
 from hex import hex
-import menus
+from menus import main_menu
+
 
 def main():
     pg.init()
     pg.display.set_caption("Hex")
 
-    sW = 600
+    sW = 800
     sH = 600
     screen = pg.display.set_mode((sW, sH))
     clock = pg.time.Clock()
 
-    menus.match_result_menu(screen,clock, sW, sH, "user", 0, 0)
-    menus.main_menu(screen, clock, sW, sH)
-    hex(screen, clock, sW, sH)
+    while True:
+        main_menu(screen, clock, sW, sH)
+        hex(screen, clock, sW, sH)
 
     pg.quit()
 

@@ -1,3 +1,4 @@
+import pygame as pg
 from tile import Tile
 import random
 import math as m
@@ -24,7 +25,7 @@ class Board:
 
         self.tiles = []
         self.empty_color = "darkgrey"
-        self.moves_ahead = 80
+        self.moves_ahead = int(self.dimension * 8)
         self.fill_tiles()
 
     def fill_tiles(self):
@@ -51,6 +52,27 @@ class Board:
         * Draws all tiles to the surface
         '''
         for tile in self.tiles:
+            # Draw colored walls
+            wall_width = 7
+            if tile.label // self.dimension == 0:
+                pg.draw.lines(surface, "red", False,
+                              (tile.points[5], tile.points[0], tile.points[1]),
+                              wall_width)
+            if tile.label // self.dimension == self.dimension - 1:
+                pg.draw.lines(surface, "red", False,
+                              (tile.points[2], tile.points[3], tile.points[4]),
+                              wall_width + 1)
+            if tile.label % self.dimension == 0:
+                pg.draw.lines(surface, "blue", False,
+                              (tile.points[3], tile.points[4], tile.points[5]),
+                              wall_width + 1)
+            if tile.label == self.dimension - 1:
+                pg.draw.line(surface, "blue", tile.points[1], tile.points[2], wall_width)
+            elif tile.label % self.dimension == self.dimension - 1:
+                pg.draw.lines(surface, "blue", False,
+                              (tile.points[0], tile.points[1], tile.points[2]),
+                              wall_width)
+            # Draw the hexagon itself
             tile.draw(surface)
 
     def clear(self):
@@ -150,8 +172,8 @@ class Board:
 
             # Simulate 'sim_num' matches with the move
             for j in range(sim_num):
-                sim_colors = colors.copy() 
-                sim_colors[i] = current_color               
+                sim_colors = colors.copy()
+                sim_colors[i] = current_color
                 # Randomly fill in every space, alternating colors
                 empty_tiles = empty_tiles if empty_tiles < self.moves_ahead else self.moves_ahead
                 for k in range(empty_tiles):
