@@ -195,7 +195,6 @@ class Board:
             rates[i] = wins
 
         # Return the move with the most simulated wins
-        print(rates)
         biggest = 0
         biggest_index = 0
         for i in range(len(rates)):
