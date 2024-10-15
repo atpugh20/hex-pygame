@@ -72,7 +72,7 @@ def hex(surface, clock, sW, sH):
             if user_turn:
                 turn_text = game_font.render("Your turn!", True, white)
             else:
-                turn_text = game_font.render("Opponent chosing move...", True, white)
+                turn_text = game_font.render("Opponent choosing move...", True, white)
             surface.blit(turn_text, turn_rect)
             surface.blit(color_text, color_rect)
             pg.display.flip()
